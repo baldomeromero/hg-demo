@@ -1,27 +1,22 @@
 name: Sync to Hugging Face hub
+
 on:
   push:
     branches: [main]
-
-  # to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 jobs:
   sync-to-hub:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3 # Actualizado a v3 para mejor compatibilidad
         with:
           fetch-depth: 0
-      - name: Debug
-        env: 
-          HF: ${{ secrets.HF }}
-        run: echo "git push https://braisreal:$HF@huggingface.co/spaces/braisreal/demo main"
-      - name: Add remote
-        env:
-          HF: ${{ secrets.HF }}
-        run: git remote add space https://huggingface.co/spaces/braisreal/demo
+          lfs: true # Recomendado para Hugging Face (modelos pesados)
+
       - name: Push to hub
         env:
-          HF: ${{ secrets.HF }}
-        run: git push https://braisreal:$HF@huggingface.co/spaces/braisreal/demo main
+          HF_TOKEN: ${{ secrets.HF }}
+        run: |
+          # Usamos -f (force) para asegurar que el Space se actualice con el contenido de GitHub
+          git push -f https://braisreal:$HF_TOKEN@huggingface.co/spaces/braisreal/demo main
