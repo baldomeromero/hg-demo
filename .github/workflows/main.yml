@@ -16,7 +16,7 @@ jobs:
       - name: Debug
         env: 
           HF: ${{ secrets.HF }}
-        run: echo "$HF"
+        run: echo "git push https://braisreal:$HF@huggingface.co/spaces/braisreal/demo main"
       - name: Add remote
         env:
           HF: ${{ secrets.HF }}
