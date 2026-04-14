@@ -14,6 +14,15 @@ jobs:
           fetch-depth: 0
           lfs: true # Recomendado para Hugging Face (modelos pesados)
 
+      - name: Check secret presence
+        run: |
+          if [ -z "${{ secrets.HF }}" ]; then
+            echo "EL SECRETO ESTÁ VACÍO"
+            exit 1
+          else
+            echo "El secreto tiene contenido, el problema es la autenticación."
+          fi
+
       - name: Push to hub
         env:
           HF_TOKEN: ${{ secrets.HF }}
